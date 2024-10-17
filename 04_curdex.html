@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crud</title>
+</head>
+
+<body>
+    <h1>CRUD-js</h1>
+    <label>FirstName</label>
+    <input id="fname">
+    <br><br>
+    <label>LastName</label>
+    <input id="lname">
+    <br><br>
+    <button onclick="submit()">Submit</button>
+    <br><br>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <label>Search</label>
+        <input onkeyup="search(event)">
+        <tbody id="data">
+
+        </tbody>
+    </table>
+
+
+    <script>
+
+        //To store a value in array
+        let list = [
+            {
+                fname: "Prasanth",
+                lname: "G"
+            },
+            {
+                fname: "Basker",
+                lname: "S"
+            },
+            {
+                fname: "Jai",
+                lname: "S"
+            }
+        ];
+
+        console.log(list);
+        read(list);
+        var index = -1;
+
+        //Function Submit
+        function submit() {
+            //get the value store in variable
+            var fname = document.getElementById("fname").value;
+            // console.log(fname);
+            var lname = document.getElementById("lname").value;
+            // console.log(lname);
+
+            //Object
+            let obj = {
+                fname: fname,
+                lname: lname,
+            };
+
+            //condition for edit function
+            if (index === -1) {
+                list.push(obj);
+                console.log("new Value");
+            }
+            else {
+                list[index] = obj;
+                console.log("Old Value");
+            }
+
+            console.log(list);
+            read(list);
+            //empty the input box
+            var fname = document.getElementById("fname").value = "";
+            var lname = document.getElementById("lname").value = "";
+            index = -1;
+        }
+
+        //binding element
+        function read(list) {
+            document.getElementById("data").innerHTML = list.map((data, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${data.fname}</td>
+                <td>${data.lname}</td>
+                <td>
+                    <button onclick="edit(${i})">Edit</button>
+                    <button onclick="del(${i})">Delete</button>
+                </td>
+            </tr> `).join(' ');
+            //console.o/p
+
+            // console.log(list.map((data, i) => `${i + 1} ${data.fname} ${data.lname}`));
+        }
+
+        //edit function
+        function edit(i) {
+            console.log("working", i);
+            index = i;
+            document.getElementById("fname").value = list[i].fname;
+            document.getElementById("lname").value = list[i].lname;
+            read(list);
+
+        }
+
+        //Delet function
+        function del(i) {
+            console.log("working", i);
+            list.splice(i, 1);
+            console.log(list);
+            read(list);
+
+        }
+
+        //search function
+        function search(event) {
+            console.log(event.target.value);
+            let res = list.filter((data) => data.fname.includes(event.target.value));
+            console.log(res);
+            read(res);
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
